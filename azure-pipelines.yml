@@ -1,0 +1,67 @@
+trigger:
+  - "*"
+
+variables:
+  buildConfiguration: "Release"
+  webRepository: "capstonefinal"
+  tag: "$(Build.BuildId)"
+
+stages:
+  - stage: "Test"
+    displayName: "Testing"
+    jobs:
+      - job: "Test"
+        displayName: "Test Job"
+        pool:
+          vmImage: "ubuntu-20.04"
+        steps:
+          - task: CmdLine@2
+            displayName: hadolint
+            inputs:
+              script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
+              workingDirectory: "$(Build.SourcesDirectory)"
+            continueOnError: false
+          - task: WhiteSource@21
+            inputs:
+              projectName: 'CapstoneFinal'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: hadolintOutput
+          
+  - stage: "Build"
+    displayName: "Build and push"
+    dependsOn: Test
+    jobs:
+      - job: "Build"
+        displayName: "Build job"
+        pool:
+          vmImage: "ubuntu-20.04"
+        steps:
+          - task: Docker@2
+            displayName: "Build and push the image to container registry"
+            inputs:
+              command: buildAndPush
+              buildContext: $(Build.Repository.LocalPath)
+              repository: $(webRepository)
+              dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+              containerRegistry: "Container Registry Connection"
+              tags: |
+                $(tag)
+
+  - stage: "Deploy"
+    displayName: "Deploy the container"
+    dependsOn: Build
+    jobs:
+      - job: "Deploy"
+        displayName: "Deploy job"
+        pool:
+          vmImage: "ubuntu-20.04"
+        variables:
+          - group: Release
+        steps:
+          - task: AzureWebAppContainer@1
+            inputs:
+              appName: $(WebAppName)
+              azureSubscription: "Resource Manager Capstone Final"
+              imageName: $(RegistryName)/$(webRepository):$(build.buildId)
