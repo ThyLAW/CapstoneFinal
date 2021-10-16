@@ -48,3 +48,21 @@ stages:
               containerRegistry: "Container Registry Connection"
               tags: |
                 $(tag)
+
+  - stage: "Deploy"
+    displayName: "Deploy the container"
+    dependsOn: Build
+    jobs:
+      - job: "Deploy"
+        displayName: "Deploy job"
+        pool:
+          vmImage: "ubuntu-20.04"
+        variables:
+          - group: Release
+        steps:
+          - task: AzureWebAppContainer@1
+            inputs:
+              appName: $(WebAppName)
+              azureSubscription: "Resource Manager Capstone Final"
+              imageName: $(RegistryName)/$(webRepository):$(build.buildId)
+
