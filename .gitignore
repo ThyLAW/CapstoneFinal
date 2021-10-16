@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+**/.__pycache__
+**/.DS_Store
+bin/
+lib/
+**/*.swp
+.vscode
+**/*.pdf
