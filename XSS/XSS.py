@@ -9,23 +9,27 @@ app.config['DEBUG'] = True
 def start():
     return render_template("index.html")
 
-@app.route("/test")
-def start2():
-    return render_template("index2.html")
-
-@app.route("/home", methods=['POST'])
+@app.route("/home", methods=['GET', 'POST'])
 def home():
-    xss = request.form['string']
-    return render_template("index.html",xss = xss)
+    if request.method == 'POST':
+        xss = request.form['string']
+        return render_template("index.html",xss = xss)
+    else:
+        return redirect(url_for('start'))
 
-@app.route("/test2", methods=['POST'])
-def test():
-    filename = request.form['filename']
-    if filename == "":
-        filename = "text/default.txt"
-    f = open(filename,'r')
-    read = f.read()
-    return render_template("index2.html", read = read)
+
+@app.route("/pathtraversal", methods=['GET','POST'])
+def pathtraversal():
+    if request.method == 'POST':
+        filename = request.form['filename']
+        if filename == "":
+            filename = "text/default.txt"
+        f = open(filename,'r')
+        read = f.read()
+        return render_template("index.html", read = read)
+    else:
+        return redirect(url_for('start'))
+
 
 @app.errorhandler(404)
 def page_not_found(e):

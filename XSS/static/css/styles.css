@@ -80,6 +80,7 @@ h3, h4 {
 	box-shadow: none;
 }
 
+
 .form-control:focus {
 	border: 1px solid #30a5ff;
 	outline: 0;
