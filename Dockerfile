@@ -33,7 +33,7 @@ RUN find . -name "*.sh" -o -name "*.py" -o -name "*.css" -o -name "*.js" | xargs
 # Setting chmod +x on the scripts:
 RUN find . -name "*.sh" -o -name "*.py" | xargs chmod +x
 
-EXPOSE 80
+EXPOSE 80 5000 2222
 # Starting the actual application:
 ENTRYPOINT [ "python3", "/home/app/XSS/app.py" ]
 
