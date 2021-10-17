@@ -35,4 +35,7 @@ RUN find . -name "*.sh" -o -name "*.py" | xargs chmod +x
 
 EXPOSE 80
 # Starting the actual application:
-ENTRYPOINT [ "python3", "./app.py" ]
+ENTRYPOINT [ "python3" ]
+
+CMD [ "app.py" ]
+
