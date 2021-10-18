@@ -65,4 +65,5 @@ stages:
               appName: $(WebAppName)
               azureSubscription: "Resource Manager Capstone Final"
               imageName: $(RegistryName)/$(webRepository):$(build.buildId)
+              appSettings: -Port 5000 -WEBSITES_PORT 5000
 
