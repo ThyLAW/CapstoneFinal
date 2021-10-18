@@ -65,5 +65,5 @@ stages:
             inputs:
               appName: $(WebAppName)
               azureSubscription: "Resource Manager Capstone Final"
-              imageName: $(DockerHubRegistryName)/$(webRepository):$(build.buildId)
+              imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
 
