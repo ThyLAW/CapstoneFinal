@@ -45,7 +45,7 @@ stages:
               buildContext: $(Build.Repository.LocalPath)
               repository: $(webRepository)
               dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
-              containerRegistry: "Container Registry Connection"
+              containerRegistry: "DockerHub Registry Connection"
               tags: |
                 $(tag)
 
@@ -64,5 +64,5 @@ stages:
             inputs:
               appName: $(WebAppName)
               azureSubscription: "Resource Manager Capstone Final"
-              imageName: $(RegistryName)/$(webRepository):$(build.buildId)
+              imageName: $(DockerHubRegistryName)/$(webRepository):$(build.buildId)
 
