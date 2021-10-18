@@ -43,11 +43,12 @@ stages:
             inputs:
               command: buildAndPush
               buildContext: $(Build.Repository.LocalPath)
-              repository: $(webRepository)
+              repository: thylaw/$(webRepository)
               dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
               containerRegistry: "DockerHub Registry Connection"
               tags: |
                 $(tag)
+
 
   - stage: "Deploy"
     displayName: "Deploy the container"
