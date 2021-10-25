@@ -1,5 +1,8 @@
 trigger:
-  - "main"
+  branches:
+    include:
+      - main
+
 
 variables:
   buildConfiguration: "Release"
