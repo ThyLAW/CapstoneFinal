@@ -21,7 +21,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **Cloud Provider**: Microsoft Azure App Service
 - **Container Registry**: Microsoft Container Registry
 - **Containerization**: Docker
-- **Monitoring**: DataDog (WIP), Microsoft Azure Monitoring & Alerts (WIP)
+- **Monitoring**: DataDog, Microsoft Azure Monitoring & Alerts (WIP)
 - **Notifications**: Slack (WIP), Teams (WIP), GitHub (WIP)
 - **DevOps Collaboration**: Azure Boards (WIP)
 - **Linters**: Hadolint (Dockerfile Linter)
