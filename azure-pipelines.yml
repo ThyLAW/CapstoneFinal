@@ -25,15 +25,10 @@ stages:
           - task: WhiteSource@21
             inputs:
               projectName: 'CapstoneFinal'
-      - job: "Deploy_Artifacts"
-        displayName: "Deploy Artifacts"
-        pool:
-           vmImage: "ubuntu-20.04"
-        steps:
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: $(Build.ArtifactStagingDirectory)
-            artifactName: hadolintOutput
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: hadolintOutput
           
   - stage: "Build"
     displayName: "Build and push"
