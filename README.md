@@ -1,10 +1,9 @@
 # CapstoneFinal (WIP)
 
 ## Introduction
-test22
 
 The goal is to simulate a real DevOps IT Infrastructure which is a methodology that is becoming [much more prevalent ](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report)
-
+testing here yoo
 You can see weekly updates on the development of this project [here](https://lawsblog.me/)
 
 ## Description
