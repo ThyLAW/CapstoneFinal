@@ -61,12 +61,12 @@ stages:
   - stage: "Deploy"
     jobs:
     - deployment: "Pull_Container"
-      displayName: "Deploy_to_Prod"
+      displayName: "Deploy_to_Staging"
       pool:
        vmImage: "ubuntu-20.04"
       variables:
         - group: Release
-      environment: "Production"
+      environment: "Staging"
       strategy:
        runOnce:
          deploy:
