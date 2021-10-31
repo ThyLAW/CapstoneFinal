@@ -1,5 +1,5 @@
 # CapstoneFinal (WIP)
-**Board Status**                                      d
+**Board Status**
 
 [![Board Status](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/_apis/work/boardbadge/189c5a36-0f19-4552-ac89-e765b550a98c?columnOptions=1)](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/_boards/board/t/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/Microsoft.RequirementCategory/) 
 
