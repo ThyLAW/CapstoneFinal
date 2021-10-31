@@ -74,7 +74,7 @@ stages:
             - download: none
             - task: AzureWebAppContainer@1
               inputs:
-               appName: $(WebAppName)
+               appName: $(WebAppNameStaging)
                azureSubscription: "Resource Manager Capstone Final"
                imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
 
