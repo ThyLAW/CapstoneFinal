@@ -63,6 +63,7 @@ stages:
        runOnce:
          deploy:
            steps:
+            - download: none
             - task: AzureWebAppContainer@1
               inputs:
                appName: $(WebAppName)
