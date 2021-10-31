@@ -1,5 +1,13 @@
 trigger:
- - main   
+ branches:
+   include:
+     - main
+   exclude:
+      - '*'
+ paths:
+  exclude:
+  - README.md
+    
 
 pr: none
 
