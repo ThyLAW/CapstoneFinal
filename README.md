@@ -1,5 +1,8 @@
 # CapstoneFinal (WIP)
 
+[![Board Status](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/_apis/work/boardbadge/189c5a36-0f19-4552-ac89-e765b550a98c?columnOptions=1)](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/_boards/board/t/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/Microsoft.RequirementCategory/) [![Build Status](https://dev.azure.com/LAW175/Capstone%20Final/_apis/build/status/ThyLAW.CapstoneFinal?branchName=main)](https://dev.azure.com/LAW175/Capstone%20Final/_build/latest?definitionId=8&branchName=main)
+
+
 ## Introduction
 test
 This is a work in progress Continuous Integration / Continuous Deployment pipeline that takes code from the source repository, tests it for vulnerabilities and linting issues, builds it into a container and applies testing to it, and if it is successful, it then deploys it to a cloud provider using a CI/CD tool.
