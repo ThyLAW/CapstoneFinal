@@ -30,7 +30,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **Containerization**: Docker
 - **Monitoring**: DataDog, Microsoft Azure Monitoring & Alerts (WIP)
 - **Notifications**: Slack (WIP), Teams (WIP), GitHub (WIP)
-- **DevOps Collaboration**: Azure Boards (WIP)
+- **DevOps Collaboration**: Azure Boards
 - **Linters**: Hadolint (Dockerfile Linter)
 - **SAST**: WhiteSource Bolt (Open Source Vulnerability Scanner)
 - **DAST**: WIP
