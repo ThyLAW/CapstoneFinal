@@ -1,7 +1,6 @@
 # CapstoneFinal (WIP)
 
 ## Introduction
-test
 This is a work in progress Continuous Integration / Continuous Deployment pipeline that takes code from the source repository, tests it for vulnerabilities and linting issues, builds it into a container and applies testing to it, and if it is successful, it then deploys it to a cloud provider using a CI/CD tool.
 
 The goal is to simulate a real DevOps IT Infrastructure which is a methodology that is becoming [much more prevalent ](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report)
