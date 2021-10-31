@@ -1,5 +1,12 @@
 trigger:
-  - main
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - '**/README.md'
+
+   
 
 pr: none
 
