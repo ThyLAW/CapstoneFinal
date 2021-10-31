@@ -1,6 +1,8 @@
 trigger:
   - main
 
+pr: none
+
 
 variables:
   buildConfiguration: "Release"
@@ -50,21 +52,43 @@ stages:
               tags: |
                 $(tag)
 
-
   - stage: "Deploy"
-    displayName: "Deploy the container"
-    dependsOn: Build
     jobs:
-      - job: "Deploy"
-        displayName: "Deploy job"
-        pool:
-          vmImage: "ubuntu-20.04"
-        variables:
-          - group: Release
-        steps:
-          - task: AzureWebAppContainer@1
-            inputs:
-              appName: $(WebAppName)
-              azureSubscription: "Resource Manager Capstone Final"
-              imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
+    - deployment: "Pull_Container"
+      displayName: "Deploy_to_Prod"
+      pool:
+       vmImage: "ubuntu-20.04"
+      variables:
+        - group: Release
+      environment: "Production"
+      strategy:
+       runOnce:
+         deploy:
+           steps:
+            - download: none
+            - task: AzureWebAppContainer@1
+              inputs:
+               appName: $(WebAppName)
+               azureSubscription: "Resource Manager Capstone Final"
+               imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
+
+
+
+# trying something out
+  # - stage: "Deploy"
+  #   displayName: "Deploy the container"
+  #   dependsOn: Build
+  #   jobs:
+  #     - job: "Deploy"
+  #       displayName: "Deploy job"
+  #       pool:
+  #         vmImage: "ubuntu-20.04"
+        # variables:
+        #   - group: Release
+  #       steps:
+  #         - task: AzureWebAppContainer@1
+  #           inputs:
+  #             appName: $(WebAppName)
+  #             azureSubscription: "Resource Manager Capstone Final"
+  #             imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
 

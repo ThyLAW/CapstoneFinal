@@ -2,7 +2,6 @@
 
 ## Introduction
 
-test 2This is a work in progress Continuous Integration / Continuous Deployment pipeline that takes code from the source repository, tests it for vulnerabilities and linting issues, builds it into a container and applies testing to it, and if it is successful, it then deploys it to a cloud provider using a CI/CD tool.
 
 The goal is to simulate a real DevOps IT Infrastructure which is a methodology that is becoming [much more prevalent ](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report)
 
@@ -19,9 +18,9 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **CI/CD**: Azure DevOps
 - **Code Repository**: GitHub
 - **Cloud Provider**: Microsoft Azure App Service
-- **Container Registry**: Microsoft Container Registry
+- **Container Registry**: Docker Hub, Microsoft Container Registry (Issue Shown [here](https://docs.microsoft.com/en-us/answers/questions/593633/azure-app-service-fails-to-start-docker-flask-can.html)
 - **Containerization**: Docker
-- **Monitoring**: DataDog (WIP), Microsoft Azure Monitoring & Alerts (WIP)
+- **Monitoring**: DataDog, Microsoft Azure Monitoring & Alerts (WIP)
 - **Notifications**: Slack (WIP), Teams (WIP), GitHub (WIP)
 - **DevOps Collaboration**: Azure Boards (WIP)
 - **Linters**: Hadolint (Dockerfile Linter)
