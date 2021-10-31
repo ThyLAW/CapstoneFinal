@@ -61,7 +61,7 @@ stages:
   - stage: "Deploy"
     jobs:
     - deployment: "Pull_Container"
-      displayName: "Deploy_to_Prod"
+      displayName: "Deploy_to_Staging"
       pool:
        vmImage: "ubuntu-20.04"
       variables:
@@ -74,7 +74,7 @@ stages:
             - download: none
             - task: AzureWebAppContainer@1
               inputs:
-               appName: $(WebAppName)
+               appName: $(WebAppNameStaging)
                azureSubscription: "Resource Manager Capstone Final"
                imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
 
