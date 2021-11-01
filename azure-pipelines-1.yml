@@ -24,6 +24,13 @@ stages:
             inputs:
               script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
               workingDirectory: "$(Build.SourcesDirectory)"
+          - task: PythonScript@0
+            inputs:
+              script: |
+               pip3 install bandit
+               bandit -r . -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+              
+
             
           - task: WhiteSource@21
             inputs:
