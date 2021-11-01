@@ -37,7 +37,7 @@ stages:
       - job: "Test_Python"
         displayName: "Test Python"
         pool:
-         vmImage: "windows-latest"
+         vmImage: "ubuntu-latest"
         steps:                   
           - task: UsePythonVersion@0
             inputs:
