@@ -43,7 +43,7 @@ stages:
             inputs:
               versionSpec: '3.6'
           - script: |
-              pip install --upgrade pip bandit
+              pip install --upgrade bandit
               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
           - task: PublishPipelineArtifact@1
             inputs:
