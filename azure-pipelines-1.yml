@@ -29,7 +29,7 @@ stages:
             inputs:
               script: |
                pip3 install bandit
-               bandit -r . -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
               
 
             
