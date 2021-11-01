@@ -45,7 +45,11 @@ stages:
           - script: 
               pip install --upgrade pip
               pip install bandit
-               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: pythonoutput
           # - task: PythonScript@0
           #   inputs:
           #     scriptSource: inline
