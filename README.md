@@ -7,6 +7,8 @@
 
 [![Build Status](https://dev.azure.com/LAW175/Capstone%20Final/_apis/build/status/ThyLAW.CapstoneFinal?branchName=main)](https://dev.azure.com/LAW175/Capstone%20Final/_build/latest?definitionId=8&branchName=main)
 
+[![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+
 
 ## Introduction
 This is a work in progress Continuous Integration / Continuous Deployment pipeline that takes code from the source repository, tests it for vulnerabilities and linting issues, builds it into a container and applies testing to it, and if it is successful, it then deploys it to a cloud provider using a CI/CD tool.
