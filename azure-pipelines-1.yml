@@ -25,6 +25,23 @@ stages:
               script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
+            
+          # - task: WhiteSource@21
+          #   inputs:
+          #     projectName: 'CapstoneFinal'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: hadolintOutput
+
+      - job: "Test_Python"
+        displayName: "Test Python"
+        pool:
+         vmImage: "windows-latest"
+        steps:                   
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.6'
           - task: PythonScript@0
             inputs:
               scriptSource: inline
@@ -33,12 +50,3 @@ stages:
                python -m pip install bandit
                bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
               
-
-            
-          - task: WhiteSource@21
-            inputs:
-              projectName: 'CapstoneFinal'
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: hadolintOutput
