@@ -33,10 +33,22 @@ stages:
           - task: WhiteSource@21
             inputs:
               projectName: 'CapstoneFinal'
+      - job: "Test_Python"
+        displayName: "Test Python"
+        pool:
+         vmImage: "ubuntu-latest"
+        steps:                   
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.6'
+          - script: |
+              pip install --upgrade bandit
+              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+            displayName: "Bandit Test"
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: hadolintOutput
+              artifactName: Output
           
   - stage: "Build"
     displayName: "Build and push"
