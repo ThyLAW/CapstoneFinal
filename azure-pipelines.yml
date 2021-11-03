@@ -33,6 +33,11 @@ stages:
           - task: WhiteSource@21
             inputs:
               projectName: 'CapstoneFinal'
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: Hadolint Output
+
       - job: "Test_Python"
         displayName: "Test Python"
         pool:
