@@ -50,11 +50,34 @@ stages:
               python -m pip install flake8
               flake8 .
             displayName: 'Run Flake8 Test'
+            failOnStderr: false
+      - job:
+        pool:
+         vmImage: 'ubuntu-latest'
+        strategy:
+          matrix:
+            Python27:
+              python.version: '2.7'
+            Python35:
+              python.version: '3.5'
+            Python36:
+              python.version: '3.6'
+            Python37:
+              python.version: '3.7'
+        steps:
+        - task: UsePythonVersion@0
+          displayName: 'Use Python $(python.version)'
+          inputs:
+            versionSpec: '$(python.version)'
+        - script: pip install tox
+          displayName: 'Install Tox'
+        - script: tox -e py
+          displayName: 'Run Tox'
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: pythonoutput
+          # - task: PublishPipelineArtifact@1
+          #   inputs:
+          #     targetPath: $(Build.ArtifactStagingDirectory)
+          #     artifactName: pythonoutput
           # - task: PythonScript@0
           #   inputs:
           #     scriptSource: inline
