@@ -46,6 +46,10 @@ stages:
               pip install --upgrade bandit
               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
             displayName: "Bandit Test"
+          - script: |
+              python -m pip install flake8
+              flake8 .
+            displayName: 'Run Flake8 Test'
 
           - task: PublishPipelineArtifact@1
             inputs:
