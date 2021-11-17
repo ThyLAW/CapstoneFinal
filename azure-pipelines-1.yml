@@ -43,15 +43,30 @@ stages:
             inputs:
               versionSpec: '3.6'
           - task: Docker@2
+            displayName: "Build and push the image to container registry"
             inputs:
-              command: 'build'
-              Dockerfile: '**/Dockerfile'
-              tags: flasktest123
+              command: buildAndPush
+              buildContext: $(Build.Repository.LocalPath)
+              repository: thylaw/flasktest
+              dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+              containerRegistry: "DockerHub Registry Connection"
+              tags: |
+                $(tag) 
+          # - task: Docker@2
+          #   inputs:
+          #     command: 'build'
+          #     Dockerfile: '**/Dockerfile'
+          #     tags: flasktest123
+          # - task: Docker@2
+          #   inputs:
+          #     command: 'start'
+          #     arguments: '-p 5000:5000'
+          #     container: 'flasktest123'
           
           - task: CmdLine@2
             displayName: dockertest
             inputs:
-              script: "docker run -p 5000:5000 --name flaskcontainer flasktest123"
+              script: "docker run -p 5000:5000 --name flaskcontainer thylaw/flasktest123"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
           - task: CmdLine@2
