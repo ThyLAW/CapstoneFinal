@@ -14,25 +14,25 @@ stages:
   - stage: "Test"
     displayName: "Testing"
     jobs:
-      - job: "Test"
-        displayName: "Test Job"
-        pool:
-          vmImage: "ubuntu-20.04"
-        steps:
-          - task: CmdLine@2
-            displayName: hadolint
-            inputs:
-              script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
-              workingDirectory: "$(Build.SourcesDirectory)"
-            continueOnError: true
+      # - job: "Test"
+      #   displayName: "Test Job"
+      #   pool:
+      #     vmImage: "ubuntu-20.04"
+      #   steps:
+      #     - task: CmdLine@2
+      #       displayName: hadolint
+      #       inputs:
+      #         script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
+      #         workingDirectory: "$(Build.SourcesDirectory)"
+      #       continueOnError: true
             
-          - task: WhiteSource@21
-            inputs:
-              projectName: 'CapstoneFinal'
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: hadolintOutput
+          # - task: WhiteSource@21
+          #   inputs:
+          #     projectName: 'CapstoneFinal'
+          # - task: PublishPipelineArtifact@1
+          #   inputs:
+          #     targetPath: $(Build.ArtifactStagingDirectory)
+          #     artifactName: hadolintOutput
 
       - job: "Test_Python"
         displayName: "Test Python"
@@ -42,15 +42,33 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '3.6'
-          - script: |
-              pip install --upgrade bandit
-              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
-            displayName: "Bandit Test"
-          - script: |
-              python -m pip install flake8
-              flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
-            displayName: 'Run Flake8 Test'
+          - task: Docker@2
+            inputs:
+              command: 'build'
+              Dockerfile: '**/Dockerfile'
+              tags: flasktest
+          
+          - task: CmdLine@2
+            displayName: dockertest
+            inputs:
+              script: "docker run -p 5000:5000 --name flaskcontainer flasktest123"
+              workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
+          - task: CmdLine@2
+            displayName: curl
+            inputs:
+              script: "curl http://localhost:5000"
+              workingDirectory: "$(Build.SourcesDirectory)"
+            continueOnError: true
+          # - script: |
+          #     pip install --upgrade bandit
+          #     bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+          #   displayName: "Bandit Test"
+          # - script: |
+          #     python -m pip install flake8
+          #     flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
+          #   displayName: 'Run Flake8 Test'
+          #   continueOnError: true
 
           - task: PublishPipelineArtifact@1
             inputs:
