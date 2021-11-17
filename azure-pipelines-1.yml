@@ -46,7 +46,7 @@ stages:
             inputs:
               command: 'build'
               Dockerfile: '**/Dockerfile'
-              tags: flasktest
+              tags: flasktest123
           
           - task: CmdLine@2
             displayName: dockertest
