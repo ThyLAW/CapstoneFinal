@@ -15,9 +15,9 @@ stages:
     displayName: "Testing"
     jobs:
       - job: "Test"
-        displayName: "Test Job"
+        displayName: "Generic_Tests"
         pool:
-          vmImage: "ubuntu-20.04"
+          vmImage: "ubuntu-latest"
         steps:
           - task: CmdLine@2
             displayName: hadolint
@@ -34,7 +34,7 @@ stages:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: hadolintOutput
 
-      - job: "Test_Python"
+      - job: "Python_Tests"
         displayName: "Test Python"
         pool:
          vmImage: "ubuntu-latest"
@@ -42,25 +42,57 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '3.6'
+          - task: Docker@2
+            displayName: "Build and push the image to container registry"
+            inputs:
+              command: buildAndPush
+              buildContext: $(Build.Repository.LocalPath)
+              repository: thylaw/flasktest
+              dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+              containerRegistry: "DockerHub Registry Connection"
+              tags: |
+                $(tag) 
+
           - script: |
-              pip install --upgrade bandit
-              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
-            displayName: "Bandit Test"
+              sudo apt-get install libcurl4-openssl-dev
+            displayName: "Install Linux Packages"
+
+          - script: |
+              pip install --upgrade pycurl pytest pytest-azurepipelines bandit
+            displayName: "Install Python Dependencies"
+          - task: CmdLine@2
+            displayName: Run Docker Container
+            inputs:
+              script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:$(build.buildId)"
+              workingDirectory: "$(Build.SourcesDirectory)"
+            continueOnError: true
+
+          - task: PythonScript@0
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
+          - script: |
+              python -m pytest test_curl.py
+            displayName: 'pytest'
+            continueOnError: true
+          - task: CmdLine@2
+            displayName: Get Curl Data
+            inputs:
+              script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
+              workingDirectory: "$(Build.SourcesDirectory)"
+            continueOnError: true
+
           - script: |
               python -m pip install flake8
               flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
             displayName: 'Run Flake8 Test'
             continueOnError: true
-
+          - script: |
+              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+            displayName: "Bandit Test"
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: pythonoutput
-          # - task: PythonScript@0
-          #   inputs:
-          #     scriptSource: inline
-          #     script: |
-              #  python -m pip install --upgrade pip
-              #  python -m pip install bandit
-              #  bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+
               
