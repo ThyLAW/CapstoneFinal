@@ -62,26 +62,31 @@ stages:
           #     command: 'start'
           #     arguments: '-p 5000:5000'
           #     container: 'flasktest123'
-          
+          - script: |
+              apt-get install libcurl libcurl-dev
+            displayName: "install libcurl"
+
+          - script: |
+              pip install --upgrade pycurl pytest
+            displayName: "Install dependencies"
           - task: CmdLine@2
             displayName: dockertest
             inputs:
               script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:218"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
-          - script: |
-              pip install --upgrade pycurl pytest
-            displayName: "Install dependencies"
+
+          - task: PythonScript@0
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
           - task: CmdLine@2
             displayName: curl
             inputs:
               script: "curl http://localhost:5000"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
-          - task: PythonScript@0
-            inputs:
-              scriptSource: 'filePath'
-              scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
+
 
           # - script: |
           #     python -m pip install flake8
@@ -89,10 +94,10 @@ stages:
           #   displayName: 'Run Flake8 Test'
           #   continueOnError: true
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: pythonoutput
+          # - task: PublishPipelineArtifact@1
+          #   inputs:
+          #     targetPath: $(Build.ArtifactStagingDirectory)
+          #     artifactName: pythonoutput
           # - task: PythonScript@0
           #   inputs:
           #     scriptSource: inline
