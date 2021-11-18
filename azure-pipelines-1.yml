@@ -42,26 +42,17 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '3.6'
-          # - task: Docker@2
-          #   displayName: "Build and push the image to container registry"
-          #   inputs:
-          #     command: buildAndPush
-          #     buildContext: $(Build.Repository.LocalPath)
-          #     repository: thylaw/flasktest
-          #     dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
-          #     containerRegistry: "DockerHub Registry Connection"
-          #     tags: |
-          #       $(tag) 
-          # - task: Docker@2
-          #   inputs:
-          #     command: 'build'
-          #     Dockerfile: '**/Dockerfile'
-          #     tags: flasktest123
-          # - task: Docker@2
-          #   inputs:
-          #     command: 'start'
-          #     arguments: '-p 5000:5000'
-          #     container: 'flasktest123'
+          - task: Docker@2
+            displayName: "Build and push the image to container registry"
+            inputs:
+              command: buildAndPush
+              buildContext: $(Build.Repository.LocalPath)
+              repository: thylaw/flasktest
+              dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+              containerRegistry: "DockerHub Registry Connection"
+              tags: |
+                $(tag) 
+
           - script: |
               sudo apt-get install libcurl4-openssl-dev
             displayName: "install libcurl"
@@ -72,7 +63,7 @@ stages:
           - task: CmdLine@2
             displayName: dockertest
             inputs:
-              script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:218"
+              script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:$(build.buildId)"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
 
