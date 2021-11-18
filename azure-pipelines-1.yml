@@ -67,7 +67,7 @@ stages:
             displayName: "install libcurl"
 
           - script: |
-              pip install --upgrade pycurl pytest
+              pip install --upgrade pycurl pytest pytest-azurepipelines
             displayName: "Install dependencies"
           - task: CmdLine@2
             displayName: dockertest
@@ -80,6 +80,9 @@ stages:
             inputs:
               scriptSource: 'filePath'
               scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
+          - script: |
+              python -m pytest test_curl.py
+            displayName: 'pytest'
           - task: CmdLine@2
             displayName: curl
             inputs:
