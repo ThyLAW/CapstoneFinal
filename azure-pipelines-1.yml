@@ -63,7 +63,7 @@ stages:
           #     arguments: '-p 5000:5000'
           #     container: 'flasktest123'
           - script: |
-              apt-get install libcurl libcurl-dev
+              sudo apt-get install libcurl libcurl-dev
             displayName: "install libcurl"
 
           - script: |
