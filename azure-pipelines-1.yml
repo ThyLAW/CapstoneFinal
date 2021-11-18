@@ -75,6 +75,10 @@ stages:
               script: "curl http://localhost:5000"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
+          - task: PythonScript@0
+            inputs:
+              scriptSource: 'filePath'
+              scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
           # - script: |
           #     pip install --upgrade bandit
           #     bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
