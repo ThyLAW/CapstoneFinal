@@ -15,7 +15,7 @@ stages:
     displayName: "Testing"
     jobs:
       - job: "Test"
-        displayName: "Test Job"
+        displayName: "Generic_Tests"
         pool:
           vmImage: "ubuntu-latest"
         steps:
@@ -33,7 +33,12 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: hadolintOutput
-           
+
+      - job: "Python_Tests"
+        displayName: "Test Python"
+        pool:
+         vmImage: "ubuntu-latest"
+        steps:                   
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '3.6'
