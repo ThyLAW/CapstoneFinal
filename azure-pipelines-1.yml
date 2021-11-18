@@ -78,7 +78,7 @@ stages:
           - task: CmdLine@2
             displayName: Get Curl Data
             inputs:
-              script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && type  $(Build.ArtifactStagingDirectory)/curl.txt "
+              script: "curl http://localhost:5000 > curl.txt && type curl.txt "
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
 
