@@ -42,16 +42,16 @@ stages:
           - task: UsePythonVersion@0
             inputs:
               versionSpec: '3.6'
-          - task: Docker@2
-            displayName: "Build and push the image to container registry"
-            inputs:
-              command: buildAndPush
-              buildContext: $(Build.Repository.LocalPath)
-              repository: thylaw/flasktest
-              dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
-              containerRegistry: "DockerHub Registry Connection"
-              tags: |
-                $(tag) 
+          # - task: Docker@2
+          #   displayName: "Build and push the image to container registry"
+          #   inputs:
+          #     command: buildAndPush
+          #     buildContext: $(Build.Repository.LocalPath)
+          #     repository: thylaw/flasktest
+          #     dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
+          #     containerRegistry: "DockerHub Registry Connection"
+          #     tags: |
+          #       $(tag) 
           # - task: Docker@2
           #   inputs:
           #     command: 'build'
@@ -69,6 +69,9 @@ stages:
               script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:218"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
+          - script: |
+              pip install --upgrade pycurl pytest
+            displayName: "Install dependencies"
           - task: CmdLine@2
             displayName: curl
             inputs:
@@ -79,10 +82,7 @@ stages:
             inputs:
               scriptSource: 'filePath'
               scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
-          # - script: |
-          #     pip install --upgrade bandit
-          #     bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
-          #   displayName: "Bandit Test"
+
           # - script: |
           #     python -m pip install flake8
           #     flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
