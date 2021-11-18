@@ -1,14 +1,12 @@
 trigger:
- branches:
-   include:
-     - main
- paths:
-  exclude:
-  - README.md
-    
+  branches:
+    include:
+      - main
+  paths:
+    exclude:
+      - README.md
 
 pr: none
-
 
 variables:
   buildConfiguration: "Release"
@@ -30,10 +28,10 @@ stages:
               script: "cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint > $(Build.ArtifactStagingDirectory)/output.txt && cat $(Build.SourcesDirectory)/Dockerfile | docker run --rm -i -v $(Build.SourcesDirectory)/hadolint.yaml:/.config/hadolint.yaml hadolint/hadolint"
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
-            
+
           - task: WhiteSource@21
             inputs:
-              projectName: 'CapstoneFinal'
+              projectName: "CapstoneFinal"
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
@@ -42,11 +40,11 @@ stages:
       - job: "Python_Tests"
         displayName: "Test Python"
         pool:
-         vmImage: "ubuntu-latest"
-        steps:                   
+          vmImage: "ubuntu-latest"
+        steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: '3.6'
+              versionSpec: "3.6"
           - task: Docker@2
             displayName: "Build and push the image to container registry"
             inputs:
@@ -56,7 +54,7 @@ stages:
               dockerfile: "$(Build.SourcesDirectory)/Dockerfile"
               containerRegistry: "DockerHub Registry Connection"
               tags: |
-                $(tag) 
+                $(tag)
           - script: |
               sudo apt-get install libcurl4-openssl-dev
             displayName: "Install Linux Packages"
@@ -70,13 +68,9 @@ stages:
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
 
-          - task: PythonScript@0
-            inputs:
-              scriptSource: 'filePath'
-              scriptPath: '$(Build.SourcesDirectory)/test_curl.py'
           - script: |
               python -m pytest test_curl.py
-            displayName: 'pytest'
+            displayName: "pytest"
             continueOnError: true
           - task: CmdLine@2
             displayName: Get Curl Data
@@ -88,7 +82,7 @@ stages:
           - script: |
               python -m pip install flake8
               flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
-            displayName: 'Run Flake8 Test'
+            displayName: "Run Flake8 Test"
             continueOnError: true
           - script: |
               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
@@ -97,7 +91,7 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: pythonoutput
-          
+
   - stage: "Build"
     displayName: "Build and push"
     dependsOn: Test
@@ -120,22 +114,20 @@ stages:
 
   - stage: "Deploy"
     jobs:
-    - deployment: "Pull_Container"
-      displayName: "Deploy_to_Staging"
-      pool:
-       vmImage: "ubuntu-20.04"
-      variables:
-        - group: Release
-      environment: "Staging"
-      strategy:
-       runOnce:
-         deploy:
-           steps:
-            - download: none
-            - task: AzureWebAppContainer@1
-              inputs:
-               appName: $(WebAppNameStaging)
-               azureSubscription: "Resource Manager Capstone Final"
-               imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
-
-
+      - deployment: "Pull_Container"
+        displayName: "Deploy_to_Staging"
+        pool:
+          vmImage: "ubuntu-20.04"
+        variables:
+          - group: Release
+        environment: "Staging"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: none
+                - task: AzureWebAppContainer@1
+                  inputs:
+                    appName: $(WebAppNameStaging)
+                    azureSubscription: "Resource Manager Capstone Final"
+                    imageName: docker.io/thylaw/capstonefinal:$(build.buildId)
