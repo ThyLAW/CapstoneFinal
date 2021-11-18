@@ -78,7 +78,7 @@ stages:
           - task: CmdLine@2
             displayName: Get Curl Data
             inputs:
-              script: "curl http://localhost:5000 > curl.txt && type curl.txt "
+              script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
               workingDirectory: "$(Build.SourcesDirectory)"
             continueOnError: true
 
@@ -94,11 +94,5 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: pythonoutput
-          - task: PythonScript@0
-            inputs:
-              scriptSource: inline
-              script: |
-               python -m pip install --upgrade pip
-               python -m pip install bandit
-               bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+
               
