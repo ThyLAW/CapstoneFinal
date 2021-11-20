@@ -54,12 +54,6 @@ stages:
           - script: |
               pip install --upgrade pycurl pytest pytest-azurepipelines bandit
             displayName: "Install Python Dependencies"
-          - task: CmdLine@2
-            displayName: Run Docker Container
-            inputs:
-              script: "docker run -d -p 5000:5000 --name flaskcontainer thylaw/flasktest:$(build.buildId)"
-              workingDirectory: "$(Build.SourcesDirectory)"
-            continueOnError: true
 
           - script: |
               python -m pytest test_curl.py
