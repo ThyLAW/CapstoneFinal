@@ -45,7 +45,7 @@ stages:
 
           - script: |
               docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/flasktest123:$(tag) .
-              docker run --name flasktest --rm -d thylaw/flasktest123:$(tag)
+              docker run --name flasktest --rm -d -p 5000:5000 thylaw/flasktest123:$(tag)
           # - task: Docker@2
           #   displayName: "Build and push the image to container registry"
           #   inputs:
@@ -71,10 +71,10 @@ stages:
           #     workingDirectory: "$(Build.SourcesDirectory)"
           #   continueOnError: true
 
-          - script: |
-              python -m pytest test_curl.py
-            displayName: "pytest"
-            continueOnError: true
+          # - script: |
+          #     python -m pytest test_curl.py
+          #   displayName: "pytest"
+          #   continueOnError: true
           - task: CmdLine@2
             displayName: Get Curl Data
             inputs:
