@@ -1,0 +1,6 @@
+fileignoreconfig:
+- filename: test.txt
+  checksum: ac0a2f26259e845c6558bda58b2f259888c767937b229319e039f994b9980d89
+- filename: keys1.txt
+  checksum: 7c6e4b9faacc5f6300baedf91b5404d5b88102af712cc4a865da456568f69ae4
+version: ""
