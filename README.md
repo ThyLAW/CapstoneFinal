@@ -27,7 +27,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **CI/CD**: Azure DevOps
 - **Code Repository**: GitHub
 - **Cloud Provider**: Microsoft Azure - App Service (PaaS)
-- **Container Registry**: Docker Hub, ~~Microsoft Container Registry~~ (Issue Shown [here](https://docs.microsoft.com/en-us/answers/questions/593633/azure-app-service-fails-to-start-docker-flask-can.html)
+- **Container Registry**: Docker Hub, ~~Microsoft Container Registry~~ (Issue Shown [here](https://docs.microsoft.com/en-us/answers/questions/593633/azure-app-service-fails-to-start-docker-flask-can.html))
 - **Containerization**: Docker
 - **Monitoring**: [DataDog](https://www.datadoghq.com/)
 - **Notifications**: Slack (Datadog, GitHub, Azure Boards / Pipelines)
