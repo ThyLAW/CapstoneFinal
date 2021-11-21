@@ -1,17 +1,16 @@
 # CapstoneFinal (WIP)
+
 **Board Status**
 
-[![Board Status](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/_apis/work/boardbadge/189c5a36-0f19-4552-ac89-e765b550a98c?columnOptions=1)](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/_boards/board/t/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/Microsoft.RequirementCategory/) 
+[![Board Status](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/_apis/work/boardbadge/189c5a36-0f19-4552-ac89-e765b550a98c?columnOptions=1)](https://dev.azure.com/LAW175/767c6892-8352-43c5-a5fe-4aaf6d359011/_boards/board/t/04ca78cd-d78e-4980-b3cf-7ed4a305f9a3/Microsoft.RequirementCategory/)
 
-**Release Status** 
+**Release Status**
 
 [![Build Status](https://dev.azure.com/LAW175/Capstone%20Final/_apis/build/status/ThyLAW.CapstoneFinal?branchName=main)](https://dev.azure.com/LAW175/Capstone%20Final/_build/latest?definitionId=8&branchName=main)
 
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 
-
 ## Introduction
-
 
 The goal is to simulate a real DevOps IT Infrastructure which is a methodology that is becoming [much more prevalent ](https://cloud.google.com/blog/products/devops-sre/announcing-dora-2021-accelerate-state-of-devops-report)
 testing here yoo
@@ -27,21 +26,23 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 
 - **CI/CD**: Azure DevOps
 - **Code Repository**: GitHub
-- **Cloud Provider**: Microsoft Azure App Service
-- **Container Registry**: Docker Hub, Microsoft Container Registry (Issue Shown [here](https://docs.microsoft.com/en-us/answers/questions/593633/azure-app-service-fails-to-start-docker-flask-can.html)
+- **Cloud Provider**: Microsoft Azure - App Service (PaaS)
+- **Container Registry**: Docker Hub, ~~Microsoft Container Registry~~ (Issue Shown [here](https://docs.microsoft.com/en-us/answers/questions/593633/azure-app-service-fails-to-start-docker-flask-can.html)
 - **Containerization**: Docker
-- **Monitoring**: DataDog, Microsoft Azure Monitoring & Alerts (WIP)
-- **Notifications**: Slack (WIP), Teams (WIP), GitHub (WIP)
-- **DevOps Collaboration**: Azure Boards 
-- **SAST**: WhiteSource Bolt (Open Source Vulnerability Scanner), Bandit (Python SAST Linter), Hadolint (Dockerfile Linter)
+- **Monitoring**: [DataDog](https://www.datadoghq.com/)
+- **Notifications**: Slack (Datadog, GitHub, Azure Boards / Pipelines)
+- **DevOps Collaboration / Agile**: Azure Boards, Azure Dashboard
+- **Unit Tests**: [pytest](https://github.com/pytest-dev/pytest)
+- **SAST**: [WhiteSource Bolt](https://www.whitesourcesoftware.com/free-developer-tools/bolt/) (Open Source Vulnerability Scanner), [Bandit](https://github.com/PyCQA/bandit) (Python SAST Linter), [Hadolint](https://github.com/hadolint/hadolint) (Dockerfile Linter)
 - **DAST**: WIP
-- **Other**: WIP
+- **Secret Scanning**: [Talisman Pre-Commit](https://github.com/thoughtworks/talisman)
+- **Application**: Python Flask
 
 ### Stretch Goal Tools
 
 As per my [project proposal](https://lawsblog.me/posts/capstone-project-week-2-proposal/), the main goal of this project is your average CI/CD pipeline that automatically takes and builds code from a repository into a container and pushes it to a server. However, there are some optional features that I want to include:
 
-- **Heavy SAST/DAST Scanning**: Shifting left is the name of the game nowadays and companies are introducing security into their pipeline as a requirement. While this is not one of the main goals, I definitely want to include a lot of testing into my pipeline if I get the chance. No plans or ideas for tools yet.
+- **Heavy SAST/DAST Scanning**: Shifting left is the name of the game nowadays and companies are introducing security into their pipeline as a requirement. While this is not one of the main goals, I definitely want to include a lot of testing into my pipeline if I get the chance.
 - **Container Orchestration**: Kubernetes is a really interesting technology and employers would love to see experience with it. If I have time, I would like to include kubernetes as an optional stretch goal.
 - **Infrastructure as Code**: Terraform. If you automate application deployments, then why not automate the infrastructure you deploy to? Terraform would be another great addition to my project.
 
