@@ -34,7 +34,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **DevOps Collaboration / Agile**: Azure Boards, Azure Dashboard
 - **Unit Tests**: [pytest](https://github.com/pytest-dev/pytest)
 - **SAST**: [WhiteSource Bolt](https://www.whitesourcesoftware.com/free-developer-tools/bolt/) (Open Source Package Vulnerability Scanner), [Bandit](https://github.com/PyCQA/bandit) (Python SAST Linter), [Hadolint](https://github.com/hadolint/hadolint) (Dockerfile Linter)
-- **DAST**: WIP
+- **DAST**: [Nikto]https://github.com/sullo/nikto)(Open Source Web Server Scanner)
 - **Secret Scanning**: [Talisman Pre-Commit](https://github.com/thoughtworks/talisman)
 - **Application**: Python Flask
 
