@@ -52,7 +52,3 @@ def xss():
         return foundXSS
 
 xss()
-
-
-
-
