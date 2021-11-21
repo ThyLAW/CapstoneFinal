@@ -33,7 +33,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **Notifications**: Slack (Datadog, GitHub, Azure Boards / Pipelines)
 - **DevOps Collaboration / Agile**: Azure Boards, Azure Dashboard
 - **Unit Tests**: [pytest](https://github.com/pytest-dev/pytest)
-- **SAST**: [WhiteSource Bolt](https://www.whitesourcesoftware.com/free-developer-tools/bolt/) (Open Source Vulnerability Scanner), [Bandit](https://github.com/PyCQA/bandit) (Python SAST Linter), [Hadolint](https://github.com/hadolint/hadolint) (Dockerfile Linter)
+- **SAST**: [WhiteSource Bolt](https://www.whitesourcesoftware.com/free-developer-tools/bolt/) (Open Source Package Vulnerability Scanner), [Bandit](https://github.com/PyCQA/bandit) (Python SAST Linter), [Hadolint](https://github.com/hadolint/hadolint) (Dockerfile Linter)
 - **DAST**: WIP
 - **Secret Scanning**: [Talisman Pre-Commit](https://github.com/thoughtworks/talisman)
 - **Application**: Python Flask
