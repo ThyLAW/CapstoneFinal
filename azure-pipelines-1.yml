@@ -49,7 +49,12 @@ stages:
           - script: |
               git clone https://github.com/sullo/nikto
               cd nikto/program
-              ./nikto.pl -h http://localhost:5000
+              ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.txt
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: nikto
 
           # - script: |
           #     sudo apt-get install libcurl4-openssl-dev
