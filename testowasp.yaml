@@ -37,7 +37,7 @@ jobs:
         displayName: "Download ZapTransformTemplate.xslt to ArtifactStagingDirectory"
       - task: CmdLine@2
         inputs:
-          script: "docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/zap/wrk/ -t owasp/zap2docker-stable zap-api-scan.py -t $(swaggerDefUrl) -f $(definitionFormat)-g gen.conf -r OWASP-Zap-Report.html -x Report.xml || true"
+          script: "docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/zap/wrk/ -t owasp/zap2docker-stable zap-api-scan.py -t $(swaggerDefUrl) -f $(definitionFormat) -g gen.conf -r OWASP-Zap-Report.html -x Report.xml || true"
         continueOnError: true
         displayName: "Run OWASP ZAP API Scan"
 
