@@ -1,4 +1,11 @@
-parameters:
+trigger:
+  branches:
+    include:
+      - "*"
+    exclude:
+      - main
+
+variables:
   swaggerDefUrl: "https://localhost:5000"
   definitionFormat: "openapi"
 
