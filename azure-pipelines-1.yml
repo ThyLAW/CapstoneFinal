@@ -47,18 +47,23 @@ stages:
               docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
               docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
             displayName: Build&Run Container
-
+          
           - script: |
-              git clone https://github.com/sullo/nikto
-              cd nikto/program
-              ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.json
-            continueOnError: true
-            displayName: Nikto Scan
+              docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://localhost:5000 -x xml_report.xml
+            displayName: Owasp Container Scan
+          
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: nikto
+          # - script: |
+          #     git clone https://github.com/sullo/nikto
+          #     cd nikto/program
+          #     ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.json
+          #   continueOnError: true
+          #   displayName: Nikto Scan
+
+          # - task: PublishPipelineArtifact@1
+          #   inputs:
+          #     targetPath: $(Build.ArtifactStagingDirectory)
+          #     artifactName: nikto
 
           # - script: |
           #     sudo apt-get install libcurl4-openssl-dev
