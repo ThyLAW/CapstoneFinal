@@ -11,6 +11,7 @@ variables:
   buildConfiguration: "Test"
   webRepository: "capstonefinal"
   tag: "$(Build.BuildId)"
+  publishAsTestResults: "variables.PublishTestResults"
 
 
 jobs:
@@ -19,43 +20,45 @@ jobs:
       vmImage: "ubuntu-latest"
 
     steps:
-      - script: |
-          docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
-          docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
-        displayName: Build&Run Container     
-
-      - script: |
-          wget  -O $(Build.ArtifactStagingDirectory)/ZapTransform.ps1 "https://raw.githubusercontent.com/UKHO/owasp-zap-scan/master/src/ZapTransform.ps1"
-        displayName: "Download ZapTransform.ps1 to ArtifactStagingDirectory"  
+          - task: CmdLine@2
+            inputs:
+              script: 'chmod 777 -R $(Build.ArtifactStagingDirectory)'
+            displayName: "Set chmod permissions for ArtifactStagingDirectory"
+          
+          - script: |
+              wget  -O $(Build.ArtifactStagingDirectory)/ZapTransform.ps1 "https://raw.githubusercontent.com/UKHO/owasp-zap-scan/master/src/ZapTransform.ps1"
+            displayName: "Download ZapTransform.ps1 to ArtifactStagingDirectory"  
+            
+          - script: |
+              wget  -O $(Build.ArtifactStagingDirectory)/ZapTransformTemplate.xslt "https://raw.githubusercontent.com/UKHO/owasp-zap-scan/master/src/ZapTransformTemplate.xslt"
+            displayName: "Download ZapTransformTemplate.xslt to ArtifactStagingDirectory"      
         
-      - script: |
-          wget  -O $(Build.ArtifactStagingDirectory)/ZapTransformTemplate.xslt "https://raw.githubusercontent.com/UKHO/owasp-zap-scan/master/src/ZapTransformTemplate.xslt"
-        displayName: "Download ZapTransformTemplate.xslt to ArtifactStagingDirectory"      
-      
-      - task: CmdLine@2
-        inputs:
-          script: 'docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/zap/wrk/ -t owasp/zap2docker-stable zap-api-scan.py -t $(swaggerDefUrl) -f $(definitionFormat) -g gen.conf -r OWASP-Zap-Report.html -x Report.xml || true'
-        continueOnError: true
-        displayName: "Run OWASP ZAP API Scan"
-
-      - task: CmdLine@2
-        inputs:
-          script:  docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/tmp/nunit/ --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/tmp/report/ mcr.microsoft.com/powershell:ubuntu-18.04 pwsh -File '/tmp/nunit/ZapTransform.ps1'
-        displayName: "Create Nunit Test Report"
-
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFormat: 'NUnit'
-          testResultsFiles: 'Converted-OWASP-ZAP-Report.xml'
-          searchFolder: '$(Build.ArtifactStagingDirectory)'
-        displayName: "Publish OWASP ZAP API Test Report"
-
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/OWASP-Zap-Report.html'
-          ArtifactName: 'Owasp Zap HTML Report'
-          publishLocation: 'Container'
-        displayName: "Publish OWASP ZAP API HTML Report"
+          - task: CmdLine@2
+            inputs:
+              script: 'docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/zap/wrk/ -t owasp/zap2docker-stable zap-full-scan.py -t $(swaggerDefUrl) -g gen.conf -r OWASP-Zap-Report.html -x Report.xml || true'
+            continueOnError: true
+            displayName: "Run OWASP ZAP UI Full Scan"
+        
+          - task: CmdLine@2
+            condition: and(succeeded(), eq($(publishAsTestResults), true))
+            inputs:
+              script:  docker run --rm --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/tmp/nunit/ --mount type=bind,source=$(Build.ArtifactStagingDirectory),target=/tmp/report/ mcr.microsoft.com/powershell:ubuntu-18.04 pwsh -File '/tmp/nunit/ZapTransform.ps1'
+            displayName: "Create Nunit Test Report"
+        
+          - task: PublishTestResults@2
+            condition: and(succeeded(), eq($(publishAsTestResults), true))
+            inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: 'Converted-OWASP-ZAP-Report.xml'
+              searchFolder: '$(Build.ArtifactStagingDirectory)'
+            displayName: "Publish OWASP ZAP UI Test Report"
+        
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/OWASP-Zap-Report.html'
+              ArtifactName: 'Owasp Zap HTML Report'
+              publishLocation: 'Container'
+            displayName: "Publish OWASP ZAP UI HTML Report"
 
       # - task: CmdLine@2
       #   inputs:
