@@ -8,6 +8,10 @@ trigger:
 variables:
   swaggerDefUrl: "https://localhost:5000"
   definitionFormat: "openapi"
+  buildConfiguration: "Test"
+  webRepository: "capstonefinal"
+  tag: "$(Build.BuildId)"
+
 
 jobs:
   - job: Run_Owasp_Zap_API_Scan
