@@ -6,7 +6,7 @@ trigger:
       - main
 
 variables:
-  swaggerDefUrl: "https://localhost:5000"
+  swaggerDefUrl: "https://capstonefinal.azurewebsites.net/" 
   definitionFormat: "openapi"
   buildConfiguration: "Test"
   webRepository: "capstonefinal"
