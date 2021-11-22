@@ -5,14 +5,27 @@ trigger:
     exclude:
       - main
 
+resources:
+ repositories:
+    - repository: owaspzapui
+      type: github
+      endpoint: UKHO
+      name: UKHO/owasp-zap-ui-scan
+      ref: refs/heads/master
+
+
 variables:
   buildConfiguration: "Test"
   webRepository: "capstonefinal"
+  ApplicationUrl: "http://localhost:5000"
   tag: "$(Build.BuildId)"
+
 
 stages:
   - stage: "Test"
     displayName: "Testing"
+
+
     jobs:
       # - job: "Test"
       #   displayName: "Generic_Tests"
@@ -47,10 +60,12 @@ stages:
               docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
               docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
             displayName: Build&Run Container
-          
-          - script: |
-              docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://localhost:5000 -x xml_report.xml
-            displayName: Owasp Container Scan
+          - template: owasp-zap-ui-scan-template.yml@owaspzapui
+            parameters:
+              url: $(ApplicationUrl)
+          # - script: |
+          #     docker run --rm -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t http://localhost:5000 -x xml_report.xml
+          #   displayName: Owasp Container Scan
           
 
           # - script: |
