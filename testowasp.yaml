@@ -1,9 +1,4 @@
-trigger:
-  branches:
-    include:
-      - "*"
-    exclude:
-      - main
+trigger: none
 
 variables:
   swaggerDefUrl: "https://capstonefinal.azurewebsites.net/" 
