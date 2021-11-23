@@ -5,14 +5,18 @@ trigger:
     exclude:
       - main
 
+
 variables:
   buildConfiguration: "Test"
   webRepository: "capstonefinal"
   tag: "$(Build.BuildId)"
 
+
 stages:
   - stage: "Test"
     displayName: "Testing"
+
+
     jobs:
       - job: "Test"
         displayName: "Generic_Tests"
@@ -46,6 +50,19 @@ stages:
           - script: |
               docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
               docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
+            displayName: Build&Run Container
+
+          - script: |
+              git clone https://github.com/sullo/nikto
+              cd nikto/program
+              ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.json
+            continueOnError: true
+            displayName: Nikto Scan
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: nikto
 
           - script: |
               sudo apt-get install libcurl4-openssl-dev

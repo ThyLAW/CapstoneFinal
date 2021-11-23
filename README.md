@@ -34,7 +34,7 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 - **DevOps Collaboration / Agile**: Azure Boards, Azure Dashboard
 - **Unit Tests**: [pytest](https://github.com/pytest-dev/pytest)
 - **SAST**: [WhiteSource Bolt](https://www.whitesourcesoftware.com/free-developer-tools/bolt/) (Open Source Package Vulnerability Scanner), [Bandit](https://github.com/PyCQA/bandit) (Python SAST Linter), [Hadolint](https://github.com/hadolint/hadolint) (Dockerfile Linter)
-- **DAST**: WIP
+- **DAST**: [Nikto]https://github.com/sullo/nikto)(Open Source Web Server Scanner), [OWASP Zap](https://owasp.org/www-project-zap/) code sourced and modified from [UKHO](https://github.com/UKHO/owasp-zap-scan)
 - **Secret Scanning**: [Talisman Pre-Commit](https://github.com/thoughtworks/talisman)
 - **Application**: Python Flask
 
@@ -43,10 +43,11 @@ This project will demonstrate simple vulnerable web application(s) being scanned
 As per my [project proposal](https://lawsblog.me/posts/capstone-project-week-2-proposal/), the main goal of this project is your average CI/CD pipeline that automatically takes and builds code from a repository into a container and pushes it to a server. However, there are some optional features that I want to include:
 
 - **Heavy SAST/DAST Scanning**: Shifting left is the name of the game nowadays and companies are introducing security into their pipeline as a requirement. While this is not one of the main goals, I definitely want to include a lot of testing into my pipeline if I get the chance.
-- **Container Orchestration**: Kubernetes is a really interesting technology and employers would love to see experience with it. If I have time, I would like to include kubernetes as an optional stretch goal.
-- **Infrastructure as Code**: Terraform. If you automate application deployments, then why not automate the infrastructure you deploy to? Terraform would be another great addition to my project.
+- Will Add After Presentation Dec 8th
+  - ~~**Container Orchestration**~~: Kubernetes is a really interesting technology and employers would love to see experience with it. If I have time, I would like to include kubernetes as an optional stretch goal.
+  - ~~**Infrastructure as Code**~~: Terraform. If you automate application deployments, then why not automate the infrastructure you deploy to? Terraform would be another great addition to my project.
 
-## Works Used
+## Applications Used
 
 The application(s) utilized in this capstone is/are sourced from [skf-labs](https://github.com/blabla1337/skf-labs), which is a collection if **intentionally vulnerable web applications** using **Flask**. These applications are a good fit for my pipeline as they provide only a single vulnerability and documentation for resolution which will allow me to demonstrate me fixing the vulnerability!
 

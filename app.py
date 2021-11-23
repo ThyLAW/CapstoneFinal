@@ -5,9 +5,6 @@ from flask import Flask, request, url_for, render_template, redirect
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.config['DEBUG'] = True
 
-KEY = 'AIzaSyCCA25Y-CS-8_rIRBNNYv-FLCCjnHD4-aI'
-GOOGLE_API_KEY = 'AIzaSyCCA25Y-CS-8_rIRBNNYv-FLCCjnHD4-az'
-
 @app.route("/")
 def start():
     return render_template("index.html")
