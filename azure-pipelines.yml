@@ -47,40 +47,8 @@ stages:
               versionSpec: "3.6"
 
           - script: |
-              docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
-              docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
-            displayName: Build&Run Container
-
-          - script: |
-              git clone https://github.com/sullo/nikto
-              cd nikto/program
-              ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.json
-            continueOnError: true
-            displayName: Nikto Scan
-
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: nikto
-
-          - script: |
-              sudo apt-get install libcurl4-openssl-dev
-            displayName: "Install Linux Packages"
-
-          - script: |
-              pip install --upgrade pycurl pytest pytest-azurepipelines bandit
-            displayName: "Install Python Dependencies"
-
-          - script: |
-              python -m pytest test_curl.py
-            displayName: "pytest"
-            continueOnError: true
-          - task: CmdLine@2
-            displayName: Get Curl Data
-            inputs:
-              script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
-              workingDirectory: "$(Build.SourcesDirectory)"
-            continueOnError: true
+            pip install --upgrade pycurl bandit
+          displayName: "Install Python Dependencies"
 
           - script: |
               python -m pip install flake8
@@ -94,6 +62,50 @@ stages:
             inputs:
               targetPath: $(Build.ArtifactStagingDirectory)
               artifactName: pythonoutput
+
+      - job: "DAST"
+        displayName: "Test DAST"
+        pool:
+          vmImage: "ubuntu-latest"
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.6"
+        
+          - script: |
+                docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
+                docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
+              displayName: Build&Run Container
+
+            - script: |
+                git clone https://github.com/sullo/nikto
+                cd nikto/program
+                ./nikto.pl -h http://localhost:5000 -o $(Build.ArtifactStagingDirectory)/nikto.json
+              continueOnError: true
+              displayName: 'Nikto Scan'
+
+            - script: |
+                sudo apt-get install libcurl4-openssl-dev
+              displayName: "Install Linux Packages"
+
+            - script: |
+                pip install --upgrade pycurl pytest pytest-azurepipelines
+              displayName: "Install Python Dependencies"
+
+            - script: |
+                python -m pytest test_curl.py
+              displayName: "pytest"
+              continueOnError: true
+            - task: CmdLine@2
+              displayName: Get Curl Data
+              inputs:
+                script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
+                workingDirectory: "$(Build.SourcesDirectory)"
+              continueOnError: true
+            - task: PublishPipelineArtifact@1
+              inputs:
+                targetPath: $(Build.ArtifactStagingDirectory)
+                artifactName: DAST Output
 
 
   - stage: "Build"
