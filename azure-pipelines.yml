@@ -47,11 +47,10 @@ stages:
               versionSpec: "3.6"
 
           - script: |
-              pip install --upgrade pycurl bandit
+              pip install --upgrade bandit flake8
             displayName: "Install Python Dependencies"
 
           - script: |
-              python -m pip install flake8
               flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
             displayName: "Run Flake8 Test"
             continueOnError: true
