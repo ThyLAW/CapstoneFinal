@@ -5,7 +5,6 @@ LABEL "owner"="Glenn ten Cate" "owner.email"="glenn.ten.cate@owasp.org>"
 
 # Installing needed binaries and deps. Then removing unneeded deps:
 RUN apk update --no-cache && apk add python3=3.9.7-r4 python3-dev=3.9.7-r4 py3-pip=20.3.4-r1 bash=5.1.8-r0 git=2.34.1-r0 dos2unix=7.4.2-r0
-# RUN apk update --no-cache && apk add python3 python3-dev py3-pip bash git dos2unix
 
 ### Dynamic layers
 FROM skf-alpine37
