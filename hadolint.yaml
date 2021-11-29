@@ -1,3 +1,5 @@
 failure-threshold: ignore
 no-fail: true
+ignored:
+  - SC2038
 
