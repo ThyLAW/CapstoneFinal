@@ -4,8 +4,6 @@ import pycurl
 try:
     # python 3
     from urllib.parse import urlencode
-
-
 except ImportError:
     # python 2
     from urllib import urlencode
@@ -38,9 +36,8 @@ def xss():
     # intialize binary to determine if XSS found
     foundXSS = 0
 
-    # open file and iterate through each line,
-    # if line detected change 'foundXSS' to true (1)
-    with open('out.html', 'r') as f:
+    # open file and iterate through each line, if line detected change 'foundXSS' to true (1)
+    with open ('out.html', 'r') as f:
         for line in f:
             if search_data in line:
                 foundXSS = 1
@@ -53,6 +50,5 @@ def xss():
     else:
         print("No XSS Found!")
         return foundXSS
-
 
 xss()
