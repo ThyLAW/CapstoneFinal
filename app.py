@@ -3,11 +3,16 @@
 from flask import Flask, request, url_for, render_template, redirect
 
 app = Flask(__name__, static_url_path='/static', static_folder='static')
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 
 @app.route("/")
 def start():
     return render_template("index.html")
+    
+@app.after_request
+def apply_caching(response):
+    response.headers["X-Frame-Options"] = "SAMEORIGIN"
+    return response
 
 @app.route("/home", methods=['GET', 'POST'])
 def home():
