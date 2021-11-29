@@ -36,71 +36,71 @@ stages:
       #         targetPath: $(Build.ArtifactStagingDirectory)
       #         artifactName: hadolintOutput
 
-      # - job: "Python_Tests"
-      #   displayName: "Test Python"
-      #   pool:
-      #     vmImage: "ubuntu-latest"
-      #   steps:
-      #     - task: UsePythonVersion@0
-      #       inputs:
-      #         versionSpec: "3.6"
-
-      #     - script: |
-      #         pip install --upgrade bandit flake8
-      #       displayName: "Install Python Dependencies"
-
-      #     - script: |
-      #         flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
-      #       displayName: "Run Flake8 Test"
-      #       continueOnError: true
-      #     - script: |
-      #         bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
-      #       displayName: "Bandit Test"
-      #     - task: PublishPipelineArtifact@1
-      #       inputs:
-      #         targetPath: $(Build.ArtifactStagingDirectory)
-      #         artifactName: pythonoutput
-
-      - job: "DAST"
-        displayName: "Test DAST"
+      - job: "Python_Tests"
+        displayName: "Test Python"
         pool:
           vmImage: "ubuntu-latest"
         steps:
-        - task: UsePythonVersion@0
-          inputs:
-            versionSpec: "3.6"
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.6"
+
+          - script: |
+              pip install --upgrade bandit flake8
+            displayName: "Install Python Dependencies"
+
+          - script: |
+              flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
+            displayName: "Run Flake8 Test"
+            continueOnError: true
+          - script: |
+              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+            displayName: "Bandit Test"
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: $(Build.ArtifactStagingDirectory)
+              artifactName: pythonoutput
+
+      # - job: "DAST"
+      #   displayName: "Test DAST"
+      #   pool:
+      #     vmImage: "ubuntu-latest"
+      #   steps:
+      #   - task: UsePythonVersion@0
+      #     inputs:
+      #       versionSpec: "3.6"
       
-        - script: |
-              docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
-              docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
-          displayName: Build&Run Container
+      #   - script: |
+      #         docker build -f $(Build.SourcesDirectory)/Dockerfile -t thylaw/testcontainer:$(tag) .
+      #         docker run --name flasktest --rm -d -p 5000:5000 thylaw/testcontainer:$(tag)
+      #     displayName: Build&Run Container
 
-        - script: |
-            git clone https://github.com/ThyLAW/nikto
-            cd nikto/program
-            ./nikto.pl -h http://localhost:5000 -C all -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
-          continueOnError: true
-          failOnStderr: false
-          displayName: 'Nikto Scan'
-        - script: |
-            sudo apt-get install libcurl4-openssl-dev
-          displayName: "Install Linux Packages"
+      #   - script: |
+      #       git clone https://github.com/ThyLAW/nikto
+      #       cd nikto/program
+      #       ./nikto.pl -h http://localhost:5000 -C all -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
+      #     continueOnError: true
+      #     failOnStderr: false
+      #     displayName: 'Nikto Scan'
+      #   - script: |
+      #       sudo apt-get install libcurl4-openssl-dev
+      #     displayName: "Install Linux Packages"
 
-        - script: |
-            pip install --upgrade pycurl pytest pytest-azurepipelines
-          displayName: "Install Python Dependencies"
+      #   - script: |
+      #       pip install --upgrade pycurl pytest pytest-azurepipelines
+      #     displayName: "Install Python Dependencies"
 
-        - script: |
-            python -m pytest test_curl.py
-          displayName: "pytest"
-          continueOnError: true
-        - task: CmdLine@2
-          displayName: Get Curl Data
-          inputs:
-            script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
-            workingDirectory: "$(Build.SourcesDirectory)"
-          continueOnError: true
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: $(Build.ArtifactStagingDirectory)
-            artifactName: DAST Output
+      #   - script: |
+      #       python -m pytest test_curl.py
+      #     displayName: "pytest"
+      #     continueOnError: true
+      #   - task: CmdLine@2
+      #     displayName: Get Curl Data
+      #     inputs:
+      #       script: "curl http://localhost:5000 > $(Build.ArtifactStagingDirectory)/curl.txt && curl http://localhost:5000 "
+      #       workingDirectory: "$(Build.SourcesDirectory)"
+      #     continueOnError: true
+      #   - task: PublishPipelineArtifact@1
+      #     inputs:
+      #       targetPath: $(Build.ArtifactStagingDirectory)
+      #       artifactName: DAST Output
