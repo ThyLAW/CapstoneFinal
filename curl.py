@@ -38,7 +38,7 @@ def xss():
     # intialize binary to determine if XSS found
     foundXSS = 0
 
-    # open file and iterate through each line, 
+    # open file and iterate through each line,
     # if line detected change 'foundXSS' to true (1)
     with open('out.html', 'r') as f:
         for line in f:
