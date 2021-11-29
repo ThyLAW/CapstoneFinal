@@ -36,30 +36,30 @@ stages:
       #         targetPath: $(Build.ArtifactStagingDirectory)
       #         artifactName: hadolintOutput
 
-      - job: "Python_Tests"
-        displayName: "Test Python"
-        pool:
-          vmImage: "ubuntu-latest"
-        steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: "3.6"
+      # - job: "Python_Tests"
+      #   displayName: "Test Python"
+      #   pool:
+      #     vmImage: "ubuntu-latest"
+      #   steps:
+      #     - task: UsePythonVersion@0
+      #       inputs:
+      #         versionSpec: "3.6"
 
-          - script: |
-              pip install --upgrade bandit flake8
-            displayName: "Install Python Dependencies"
+      #     - script: |
+      #         pip install --upgrade bandit flake8
+      #       displayName: "Install Python Dependencies"
 
-          - script: |
-              flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
-            displayName: "Run Flake8 Test"
-            continueOnError: true
-          - script: |
-              bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
-            displayName: "Bandit Test"
-          - task: PublishPipelineArtifact@1
-            inputs:
-              targetPath: $(Build.ArtifactStagingDirectory)
-              artifactName: pythonoutput
+      #     - script: |
+      #         flake8 . | tee $(Build.ArtifactStagingDirectory)/flake8output.txt
+      #       displayName: "Run Flake8 Test"
+      #       continueOnError: true
+      #     - script: |
+      #         bandit -r $(Build.SourcesDirectory)/app.py -f json | tee $(Build.ArtifactStagingDirectory)/bandit-output.json
+      #       displayName: "Bandit Test"
+      #     - task: PublishPipelineArtifact@1
+      #       inputs:
+      #         targetPath: $(Build.ArtifactStagingDirectory)
+      #         artifactName: pythonoutput
 
       - job: "DAST"
         displayName: "Test DAST"
@@ -78,7 +78,7 @@ stages:
         - script: |
             git clone https://github.com/sullo/nikto
             cd nikto/program
-            ./nikto.pl -h http://localhost:5000 -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
+            ./nikto.pl -h http://localhost:5000 -IgnoreCode 999990 -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
           continueOnError: true
           displayName: 'Nikto Scan'
         - script: |
