@@ -9,7 +9,7 @@ app.config['DEBUG'] = False
 def start():
     return render_template("index.html")
 
-@app.before_request
+@app.after_request
 def apply_caching(response):
     response.headers["X-Frame-Options"] = "SAMEORIGIN"
     response.headers['X-Content-Type-Options'] = 'nosniff'
