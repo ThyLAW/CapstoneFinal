@@ -77,7 +77,7 @@ stages:
 
         - script: |
             git clone https://github.com/ThyLAW/nikto
-            cd ThyLAW/program
+            cd nikto/program
             ./nikto.pl -h http://localhost:5000 -C all -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
           continueOnError: true
           failOnStderr: false
