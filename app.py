@@ -5,9 +5,11 @@ from flask import Flask, request, url_for, render_template, redirect
 app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.config['DEBUG'] = False
 
+
 @app.route("/", methods=['GET'])
 def start():
     return render_template("index.html")
+
 
 @app.after_request
 def apply_caching(response):
@@ -15,11 +17,12 @@ def apply_caching(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     return response
 
+
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         xss = request.form['string']
-        return render_template("index.html",xss = xss)
+        return render_template("index.html", xss = xss)
     else:
         return redirect(url_for('start'))
 
@@ -30,7 +33,7 @@ def pathtraversal():
         filename = request.form['filename']
         if filename == "":
             filename = "text/default.txt"
-        f = open(filename,'r')
+        f = open(filename, 'r')
         read = f.read()
         return render_template("index.html", read = read)
     else:

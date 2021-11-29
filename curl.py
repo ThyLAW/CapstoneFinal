@@ -4,6 +4,8 @@ import pycurl
 try:
     # python 3
     from urllib.parse import urlencode
+
+
 except ImportError:
     # python 2
     from urllib import urlencode
@@ -43,6 +45,7 @@ def xss():
                 foundXSS = 1
                 print(line)
                 break
+
 
     if foundXSS == 1:
         print("XSS Found!")
