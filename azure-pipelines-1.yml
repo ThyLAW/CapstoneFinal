@@ -78,8 +78,9 @@ stages:
         - script: |
             git clone https://github.com/sullo/nikto
             cd nikto/program
-            ./nikto.pl -h http://localhost:5000 -404string 999990 -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
+            ./nikto.pl -h http://localhost:5000 -C all -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
           continueOnError: true
+          failOnStderr: false
           displayName: 'Nikto Scan'
         - script: |
             sudo apt-get install libcurl4-openssl-dev
