@@ -76,8 +76,8 @@ stages:
           displayName: Build&Run Container
 
         - script: |
-            git clone https://github.com/sullo/nikto
-            cd nikto/program
+            git clone https://github.com/ThyLAW/nikto
+            cd ThyLAW/program
             ./nikto.pl -h http://localhost:5000 -C all -ask no -o $(Build.ArtifactStagingDirectory)/nikto.json
           continueOnError: true
           failOnStderr: false
