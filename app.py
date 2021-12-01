@@ -31,8 +31,20 @@ def home():
 def pathtraversal():
     if request.method == 'POST':
         filename = request.form['filename']
-        if filename == "":
-            filename = "text/default.txt"
+        localfiles = {
+            1: "text/intro.txt",
+            2: "text/chapter1.txt",
+            3: "text/chapter2.txt",
+            4: "text/default.txt"
+        }
+        locator = 4
+        for i in localfiles:
+            if filename != localfiles[i]:
+                locator = 4
+            else:
+                locator = i
+                break
+        filename = localfiles.get(locator)
         f = open(filename, 'r')
         read = f.read()
         return render_template("index.html", read=read)
