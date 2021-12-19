@@ -20,6 +20,8 @@ You can see weekly updates on the development of this project [here](https://law
 
 This project will demonstrate simple vulnerable web application(s) being scanned and rejected by CI/CD pipeline through various testers and linters and then demonstrate a "fixed" application successfully being passed throughout the pipeline.
 
+The "main" branch will host the insecure application. The "fixedbranch" hosts all of my fixes for the main branch. For demonstration purposes, merge the fixedbranch into a clone of the main branch and watch it go through the pipeline after modifying the triggers. 
+
 ![Final Diagram](/FinalDiagram.png)
 
 ### Tools Used
