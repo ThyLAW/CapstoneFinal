@@ -1,4 +1,4 @@
-# CapstoneFinal (WIP)
+# CapstoneFinal
 
 **Board Status**
 
@@ -20,7 +20,7 @@ You can see weekly updates on the development of this project [here](https://law
 
 This project will demonstrate simple vulnerable web application(s) being scanned and rejected by CI/CD pipeline through various testers and linters and then demonstrate a "fixed" application successfully being passed throughout the pipeline.
 
-![9-21-21 Pipeline Plan](/9-21-21diagram.png)
+![Final Diagram](/FinalDiagram.png)
 
 ### Tools Used
 
